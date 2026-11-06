@@ -1,0 +1,37 @@
+[project]
+name = "hermes-sentry"
+version = "0.1.0"
+description = "Signed Sentry issue-alert ingress plugin for Hermes Agent"
+readme = "README.md"
+authors = [{ name = "ParkesAI contributors" }]
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = ["aiohttp>=3.12,<4"]
+
+[project.urls]
+Homepage = "https://github.com/ParkesAI/hermes-sentry"
+Issues = "https://github.com/ParkesAI/hermes-sentry/issues"
+
+[project.entry-points."hermes_agent.plugins"]
+hermes-sentry = "hermes_sentry"
+
+[dependency-groups]
+dev = ["ruff>=0.14,<0.15", "pyyaml>=6,<7"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["hermes_sentry"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"plugin.yaml" = "hermes_sentry/plugin.yaml"
+
+[tool.hatch.build.targets.sdist]
+include = ["hermes_sentry", "tests", "plugin.yaml", "__init__.py", "README.md", "LICENSE", "CHANGELOG.md", "SECURITY.md", "CONTRIBUTING.md"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

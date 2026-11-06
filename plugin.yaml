@@ -1,0 +1,10 @@
+name: hermes-sentry
+label: Sentry webhooks
+kind: platform
+version: 0.1.0
+description: Signed Sentry issue-alert ingress for native Hermes webhooks.
+author: ParkesAI contributors
+license: MIT
+homepage: https://github.com/ParkesAI/hermes-sentry
+python_dependencies:
+  - aiohttp>=3.12,<4

@@ -46,3 +46,6 @@ class SentryAdapter(BasePlatformAdapter):
 
     async def send(self, chat_id, content, reply_to=None, metadata=None):
         return SendResult(success=False, error="Sentry ingress has no outbound messaging channel")
+
+    async def get_chat_info(self, chat_id):
+        return {"name": "Sentry webhook ingress", "type": "channel"}

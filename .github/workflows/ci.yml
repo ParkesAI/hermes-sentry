@@ -44,4 +44,4 @@ jobs:
         with:
           version: '0.13.7'
           python-version: '3.14'
-      - run: uv run --project .hermes-sdk python -W error::ResourceWarning -m unittest discover -s tests -p test_adapter_contract.py -v
+      - run: uv run --project .hermes-sdk --with . python -W error::ResourceWarning -m unittest discover -s tests -p test_adapter_contract.py -v

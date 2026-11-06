@@ -26,7 +26,7 @@ packages = ["hermes_sentry"]
 "plugin.yaml" = "hermes_sentry/plugin.yaml"
 
 [tool.hatch.build.targets.sdist]
-include = ["hermes_sentry", "tests", "plugin.yaml", "__init__.py", "README.md", "LICENSE", "CHANGELOG.md", "SECURITY.md", "CONTRIBUTING.md"]
+include = ["hermes_sentry", "tests", "scripts", "docs", "uv.lock", "plugin.yaml", "__init__.py", "README.md", "LICENSE", "CHANGELOG.md", "SECURITY.md", "CONTRIBUTING.md"]
 
 [tool.ruff]
 line-length = 100

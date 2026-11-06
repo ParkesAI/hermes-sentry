@@ -1,6 +1,7 @@
 """Check release metadata and installed wheel discovery, without provider credentials."""
 
 import pathlib
+import tarfile
 import tomllib
 import zipfile
 
@@ -20,4 +21,13 @@ with zipfile.ZipFile(wheel) as archive:
     assert yaml.safe_load(archive.read("hermes_sentry/plugin.yaml")) == manifest
     assert not any(name.endswith((".env", ".key", ".pem", ".log")) for name in names)
     assert not any(name.startswith(("tests/", ".git/", ".venv/")) for name in names)
+source = root / "dist" / f"hermes_sentry-{project['version']}.tar.gz"
+with tarfile.open(source) as archive:
+    names = {"/".join(member.name.split("/")[1:]) for member in archive.getmembers()}
+    assert {
+        "pyproject.toml",
+        "uv.lock",
+        "scripts/check_distribution.py",
+        "docs/VERIFICATION.md",
+    } <= names
 print(f"Release metadata and wheel contents verified for {project['version']}")

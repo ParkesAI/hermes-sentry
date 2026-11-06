@@ -14,3 +14,4 @@ dist/
 htmlcov/
 .DS_Store
 .hermes-sdk/
+.hermes-test-home/

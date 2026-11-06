@@ -10,7 +10,7 @@ import sys
 import unittest
 
 from aiohttp import web
-from aiohttp.test_utils import TestClient, TestServer
+from aiohttp.test_utils import TestServer
 
 HERMES_SOURCE = os.environ.get("HERMES_SOURCE")
 if HERMES_SOURCE:
@@ -54,10 +54,6 @@ class AdapterContractTest(unittest.IsolatedAsyncioTestCase):
         self.backend = TestServer(backend, host="127.0.0.1")
         await self.backend.start_server()
         self.addAsyncCleanup(self.backend.close)
-        self.client = TestClient(TestServer(web.Application(), host="127.0.0.1"))
-        # A client session is created by start_server, including on supported older aiohttp versions.
-        await self.client.start_server()
-        self.addAsyncCleanup(self.client.close)
 
     def config(self, port):
         return self.config_type(

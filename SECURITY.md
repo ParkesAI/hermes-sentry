@@ -39,5 +39,6 @@ together when rotating the Sentry integration secret. Protect backups as well.
 
 ## Supported versions
 
-Security fixes target the most recent released plugin version. The initial
-version is experimental until its release verification record is complete.
+Security fixes target the most recent released plugin version. See
+[verification](docs/VERIFICATION.md) for the qualified Hermes version and
+remaining coverage limitations.

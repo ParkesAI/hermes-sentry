@@ -2,10 +2,42 @@
 
 ## Current evidence
 
-The initial version is under qualification. Passing the isolated tests does not
-establish a live Sentry delivery, a connected Hermes gateway, or completed agent
-analysis. This document will record the completed release checks without host
-addresses, credentials, project/organization identities or deployment settings.
+Qualification completed on 2026-11-06 against Hermes Agent 0.23.0, commit
+`2bd378ed1b8d6bf2192cb26e0a55ff3091e6bd19`.
+
+- CI passes on Python 3.11–3.14: eight HTTP/configuration tests, lint, format,
+  wheel/source builds and distribution checks. A separate job runs two lifecycle
+  and native-signature contract tests against the pinned real Hermes SDK.
+- A plugin-manager installation started the platform in an isolated gateway.
+  A signed synthetic alert produced one user message and one completed assistant
+  response. Invalid signatures returned 401. Replaying identical bytes with
+  different caller delivery headers did not create another activation.
+- A production gateway received a Sentry **built-in test action** over public
+  HTTPS. Sentry's delivery record reported `event_alert.triggered` and HTTP 202.
+  The corresponding Hermes session contained one user message, one completed
+  assistant response and zero tool calls. This exercised Sentry's own signing
+  and delivery, rather than a locally signed fixture.
+- The public ingress rejected an unsigned POST with 401; the health endpoint
+  and unrelated paths were not published. Both plugin and native listeners
+  were bound to loopback. The gateway's existing private services remained
+  available after restart.
+- Wheel metadata/discovery was checked in a clean environment. Source and
+  distributions were scanned for secrets and reviewed for deployment identifiers.
+
+These checks establish delivery and analysis with a controlled provider test,
+not a production incident, a load test, or an independent security audit. The
+workflow is configured for new and regressed errors; sustained production
+operation and every Sentry/Hermes version combination have not been qualified.
+Metric alerts are not supported.
+
+### Known Hermes packaging limitation
+
+Hermes 0.23.0 combines enabled profile dependencies into a uv workspace. Two
+independently installed buildable copies of `hermes-sentry` collide on the Python
+distribution name. Qualification used a temporary ingress profile, removed its
+installation, then enabled a single production ingress profile. Multi-profile
+installation is not supported by this release. No generated Hermes workspace
+files were modified to bypass this limitation.
 
 ## Repeatable release checks
 

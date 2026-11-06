@@ -4,8 +4,9 @@ An MIT-licensed [Hermes Agent](https://github.com/NousResearch/hermes-agent) plu
 that receives **Sentry issue-alert webhooks** and hands them to Hermes's native
 webhook platform. Install, update and remove it through the Hermes plugin manager.
 
-**Status:** initial release under qualification. No claim of an independently
-audited security review or universal compatibility is made.
+**Status:** initial release, qualified against Hermes Agent 0.23.0. A real Sentry
+test delivery produced a completed Hermes response. See the [verification
+record](docs/VERIFICATION.md) for the tested boundary and limitations.
 
 ```mermaid
 flowchart LR
@@ -43,6 +44,10 @@ hermes plugins install ParkesAI/hermes-sentry --no-enable
 For an immutable deployment, add `--ref` followed by the full commit SHA shown on
 the release page. Tags and package versions describe a release; the install pin
 is the immutable commit. Review the source and declared dependency before enabling.
+
+Install the receiver in one ingress profile. Hermes 0.23.0 cannot resolve two
+independent, buildable copies with the same distribution name across profiles.
+Remove a temporary test installation before enabling the production copy.
 
 The repository also builds a standard Python wheel with a `hermes_agent.plugins`
 entry point. It is not yet published to PyPI; do not install a similarly named
@@ -103,9 +108,15 @@ PyPI project assuming it is this plugin.
 5. Forward only `POST /sentry` from your HTTPS ingress to the loopback receiver.
    Keep the body and `Sentry-Hook-Signature` / `Sentry-Hook-Resource` headers intact.
    Do not expose the native webhook listener, health endpoint, or unrelated APIs.
+   With Tailscale Funnel or Serve, a path mount strips the matching prefix.
+   For example, map `/sentry` to `http://127.0.0.1:8650/sentry`, then verify an
+   unsigned public POST returns 401 and unrelated paths return 404.
 6. Add the custom integration as an action on the intended Sentry issue-alert
    workflow. Preserve existing actions. Start with a controlled test and verify
-   an actual Hermes session and result, not just an HTTP success.
+   an actual Hermes session and result, not just an HTTP success. For an
+   integration without UI components, Sentry lists it under **Send a notification
+   via a webhook**. Use the alert editor’s test action to send only to this
+   integration, without triggering other alert actions.
 
 ### Configuration reference
 

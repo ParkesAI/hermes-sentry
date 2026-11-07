@@ -62,6 +62,15 @@ class AdapterContractTest(unittest.IsolatedAsyncioTestCase):
             extra={"project_ids": [101], "port": port, "upstream_port": self.backend.port},
         )
 
+    async def test_adapter_passes_explicit_profile_to_native_webhook_url(self):
+        config = self.config(self.free_port())
+        config.extra["profile"] = "reviewer"
+        adapter = self.adapter_type(config)
+        self.assertEqual(
+            adapter.settings.upstream_url,
+            f"http://127.0.0.1:{self.backend.port}/p/reviewer/webhooks/sentry",
+        )
+
     def free_port(self):
         with socket.socket() as sock:
             sock.bind(("127.0.0.1", 0))

@@ -154,6 +154,19 @@ match `token`, and its accepted event must include `sentry.event_alert`.
 - Payloads and signatures are not intentionally logged. Alert content can contain
   personal data; Hermes's downstream storage and model-provider policies apply.
 
+## Target a named profile
+
+Set `platforms.sentry.extra.profile: coordinator` to forward to
+`/p/coordinator/webhooks/sentry` on the native listener. Set
+`platforms.webhook.extra.routes.sentry.profile: coordinator` to bind the native
+route to the same profile. Replace `coordinator` with an existing, served profile.
+Its native route still controls tools and response delivery.
+
+Omitting `extra.profile` preserves default-profile routing. Invalid names fail
+configuration validation; an unavailable or mismatched destination returns a
+retryable failure without falling back to the default profile. The public
+provider URL, signing credential and payload are unchanged.
+
 ## Update and remove
 
 ```sh

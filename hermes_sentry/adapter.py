@@ -21,6 +21,7 @@ class SentryAdapter(BasePlatformAdapter):
             port=extra.get("port", 8650),
             upstream_port=extra.get("upstream_port", 8644),
             route=extra.get("route", "sentry"),
+            profile=extra.get("profile"),
         )
         self.runner = None
 

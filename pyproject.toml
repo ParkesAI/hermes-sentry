@@ -1,6 +1,6 @@
 [project]
 name = "hermes-sentry"
-version = "0.1.0"
+version = "0.1.1"
 description = "Signed Sentry issue-alert ingress plugin for Hermes Agent"
 readme = "README.md"
 authors = [{ name = "ParkesAI contributors" }]
